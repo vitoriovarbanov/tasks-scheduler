@@ -49,3 +49,50 @@ export const myEventsList = [
         //resource: any,
     }
 ]
+
+/************************************************* */
+export interface ProjectInterface {
+    name: string,
+    id: string,
+}
+
+export const projectsList: ProjectInterface[] = [
+    {
+        name: 'Apollo Project',
+        id: 'xs12-sdsa12',
+    },
+    {
+        name: 'Beta Project',
+        id: 'xs12-sds512',
+    },
+    {
+        name: 'Gamma',
+        id: 'xfsd2-sdsa12',
+    },
+    {
+        name: 'Project Delta',
+        id: 'bfdyh12-sdsa12',
+    },
+    {
+        name: 'Epsilon',
+        id: '6325sa-sdsa12',
+    },
+    {
+        name: 'Zeta',
+        id: '76231-sdsa12',
+    },
+    {
+        name: 'Eta Project Ultimate',
+        id: '8437-4234',
+    },
+    {
+        name: 'Theta Gatherings',
+        id: '762321-zzz222',
+    },
+    {
+        name: 'Iota Update',
+        id: '8623ss-ss',
+    },
+]
+
+/************************************************** */

@@ -2,13 +2,12 @@ import React from 'react';
 import './assets/scss/main.scss';
 //import history from './history';
 //import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SchedulerComponent from './components/scheduler/scheduler';
+import SchedulerParent from './components/scheduler/scheduler-parent';
 
 function App() {
   return (
     <div className='App'>
-      <header className='App-header'>GOGOGOG</header>
-      <SchedulerComponent />
+      <SchedulerParent />
      {/*  <Route path='/welcome' element={<Home/>} /> */}
     </div>
   );
