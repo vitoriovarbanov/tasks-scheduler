@@ -1,0 +1,269 @@
+
+@import 'react-big-calendar/lib/sass/styles';
+@import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+
+.height600 {
+  position: relative;
+  height: 600px;
+}
+
+.examples--header {
+  margin: 0 40px;
+  text-align: center;
+}
+
+.dndOutsideSourceExample {
+  @extend .examples--header;
+  display: flex;
+
+  >.inner {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    h4 {
+      color: grey;
+      width: 100%;
+    }
+
+    div[draggable] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid gray;
+      border-radius: 4px;
+      width: 100px;
+      margin: 10px;
+      cursor: grab;
+    }
+
+    input[type='checkbox'] {
+      margin-right: 5px;
+    }
+  }
+}
+
+.card {
+  background-color: white;
+  border: 0;
+  padding: 24px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.isDraggable {
+  cursor: grab !important;
+}
+
+.nonDraggable,
+.nonResizable {
+  background-color: lighten(#3174ad, 40) !important;
+  color: black !important;
+}
+
+.rbc-events-container {
+  margin-right: 0 !important;
+}
+
+.rbc-header {
+  font-size: larger !important;
+}
+
+.rbc-time-view .rbc-row {
+  min-height: 24px !important;
+}
+
+
+/**********************************************************************************/
+
+.scheduler-main-container {
+  overflow-y: scroll;
+  height: 90vh;
+
+  p {
+    font-size: $generic-small-font;
+  }
+
+  span {
+    font-size: $generic-small-font;
+  }
+
+  .inline-block {
+    display: inline-block;
+  }
+}
+
+.content-wrapper {
+  display: flex;
+  width: 99.5%;
+
+  &--engagements {
+    width: 220px;
+    margin-right: 10px;
+  }
+
+  &--calendar {
+    width: 100%;
+  }
+}
+
+.scheduler-engagements {
+
+  &--container {
+    height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+
+    @media (min-width: 576px) {
+      .card-group {
+        flex-flow: column !important;
+      }
+    }
+
+  }
+
+  &--card {
+    padding: .7rem .3rem;
+    cursor: pointer;
+    margin: .4rem;
+    border-radius: 5px;
+  }
+}
+
+.eng-selected {
+  @extend .scheduler-engagements--card;
+  border: 1px solid black;
+  box-shadow: 5px 10px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.scheduler-disabled {
+  opacity: 0.4;
+}
+
+.scheduler-tasks-container-card {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.scheduler-tasks-single-card {
+  padding: initial;
+  text-align: center;
+  margin: .5rem;
+  cursor: pointer;
+  height: 22.5px;
+  border-radius: .3rem;
+  max-width: 250px;
+}
+
+.scheduler-tasks-eng-team-card {
+  text-align: center;
+  cursor: pointer;
+  border-radius: .3rem;
+  background-color: gainsboro;
+  margin: 0 .5rem;
+  max-width: 250px;
+  padding: .2rem;
+  margin: .3rem;
+
+  p {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .p-bold {
+    font-weight: bold;
+    font-size: 13.125px;
+    margin-bottom: .1rem;
+  }
+
+  &--user-in-team {
+    @extend .scheduler-tasks-eng-team-card;
+    background-color: palegreen;
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  /*  &--selected{
+    @extend .scheduler-tasks-eng-team-card;
+    background-color: palegreen;
+  } */
+}
+
+.scheduler-collapsed-card {
+  padding: .5rem;
+  box-shadow: none !important;
+  display: flow-root;
+  margin-bottom: 0 !important;
+}
+
+.card-wrapper-users {
+  padding: .8rem;
+}
+
+.not-selected {
+  color: $danger
+}
+
+.error-hidden {
+  display: none;
+}
+
+.aliceblue {
+  background-color: aliceblue;
+  color: black
+}
+
+.greenyellow {
+  background-color: greenyellow;
+  color: black
+}
+
+.yellow {
+  background-color: yellow;
+  color: black
+}
+
+.scheduler-container-card {
+  height: calc(80vh - 0.3rem);
+  overflow-y: scroll;
+}
+
+.modal-row-action {
+  border-bottom: 1px solid gainsboro;
+  padding: .5rem;
+  justify-content: center;
+
+  &--container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: .3rem;
+  }
+}
+
+.card-modal-users {
+  padding: .2rem;
+  margin-top: .5rem;
+}
+
+.card-body-modal-users {
+  padding: .5rem;
+  cursor: pointer;
+}
+
+.card-users-text {
+  padding: 0.4rem;
+  border-radius: 0.3rem;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.user-highlithed{
+  background-color: palegreen;
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  border-radius: .3rem;
+}

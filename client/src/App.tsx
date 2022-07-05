@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './assets/scss/main.scss';
 //import history from './history';
 //import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SchedulerComponent from './components/scheduler/scheduler';

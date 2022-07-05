@@ -1,0 +1,54 @@
+// Font sizes
+$generic-small-font: 0.8rem;
+$generic-extra-small-font: 0.7rem;
+
+
+//Colors
+$white:                                  #fff !default;
+$gray-100:                               #FAFAFA !default;
+$gray-200:                               #F4F7FA !default; //body background
+$gray-300:                               #EBEDF2 !default;
+$gray-400:                               #F5F9FB !default;
+$gray-500:                               #DEE4E8 !default;
+$gray-600:                               #727891 !default;
+$gray-700:                               #A5A7B2 !default;
+$gray-800:                               #677080 !default;
+$gray-900:                               #464D69 !default;
+$black:                                  #000 !default;
+
+$grays: () !default;
+$grays: map-merge((
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900
+), $grays);
+
+
+$blue:                                    #5D92F4 !default; //Manage Primary Color
+$teal:                                    #677080 !default; // Manage Secondary Color
+$cyan:                                    #00D0BD !default; //Manage Info Color
+$green:                                   #00D014 !default; //Manage Success Color
+$yellow:                                  #FFB70F  !default; //Manage Warning Color
+$red:                                     #FF3739 !default; //Manage Danger Color
+
+$purple:                                  #564fc1 !default;
+$orange:                                  #D46B08 !default; // Manage Orange Color
+$indigo:                                  #174176 !default;
+$pink:                                    #FF2B72 !default;
+
+$primary:                                  $blue !default;
+$secondary:                                $teal !default;
+$success:                                  $green !default;
+$info:                                     $cyan !default;
+$warning:                                  $yellow !default;
+$danger:                                   $red !default;
+$light:                                    $gray-100 !default;
+$dark:                                     $gray-900 !default;
+$orange:                                   $orange !default;
+$purple:                                   $purple !default;
