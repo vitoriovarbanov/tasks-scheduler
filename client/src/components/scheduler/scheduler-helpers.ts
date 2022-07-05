@@ -58,7 +58,8 @@ export interface ProjectInterface {
         name: string,
         id: string,
         procedureDuration?: number
-    }[]
+    }[],
+    team: number[]
 }
 
 export const projectsList: ProjectInterface[] = [
@@ -90,7 +91,8 @@ export const projectsList: ProjectInterface[] = [
                 name: 'Task 6',
                 id: 'ygdhbds312'
             }
-        ]
+        ],
+        team: [1,2,5]
     },
     {
         name: 'Beta Project',
@@ -116,38 +118,81 @@ export const projectsList: ProjectInterface[] = [
                 name: 'Select a new trainee',
                 id: 'ngfh33'
             },
-        ]
+        ],
+        team: []
     },
     {
         name: 'Gamma',
         id: 'xfsd2-sdsa12',
+        team: [3,4]
     },
     {
         name: 'Project Delta',
         id: 'bfdyh12-sdsa12',
+        team: [1,2,3,4,5]
     },
     {
         name: 'Epsilon',
         id: '6325sa-sdsa12',
+        team: []
     },
     {
         name: 'Zeta',
         id: '76231-sdsa12',
+        team: []
     },
     {
         name: 'Eta Project Ultimate',
         id: '8437-4234',
+        team: []
     },
     {
         name: 'Theta Gatherings',
         id: '762321-zzz222',
+        team: []
     },
     {
         name: 'Iota Update',
         id: '8623ss-ss',
+        team: []
     },
 ]
 
 /************************************************** */
+export interface UsersInterface {
+    name: string,
+    id: number,
+    role: string,
+}
 
+export const usersForScheduler: UsersInterface[] = [
+    {
+        name: 'Alexander Emilov',
+        id: 1,
+        role: 'Developer'
+    },
+    {
+        name: 'Ivelin Dimitrov',
+        id: 2,
+        role: 'QA'
+    },
+    {
+        name: 'Mariya Ilieva',
+        id: 3,
+        role: 'Project Manager'
+    },
+    {
+        name: 'John Doe',
+        id: 4,
+        role: 'Senior Dev'
+    },
+    {
+        name: 'Ronnie J',
+        id: 5,
+        role: 'PR'
+    },
+]
+
+
+/************************************************** */
 export const formatName = (procedureName: string, engName: string) => `${procedureName} - ${engName}`;

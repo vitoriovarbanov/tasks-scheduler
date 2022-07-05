@@ -17,6 +17,7 @@ interface IProps {
     setBackgroundForOutsideResource: Dispatch<SetStateAction<string>>;
     setCurrEngName: Dispatch<SetStateAction<string>>;
     setCurrentTasks: Dispatch<SetStateAction<null | CurrentTasks[]>>
+    setCurrentTeam: Dispatch<SetStateAction<null | number[]>>
 }
 
 
@@ -30,7 +31,7 @@ export const generateColor = (i: number) => {
 
 
 const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBackgroundForOutsideResource,
-    setCurrEngName, setCurrentTasks }
+    setCurrEngName, setCurrentTasks, setCurrentTeam }
     : IProps) => {
     const getEngagementBackgroundColor = (e: React.MouseEvent<HTMLInputElement>) => {
         const el = e.target as HTMLElement
@@ -70,6 +71,7 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
                                         setSelectedProject(x.id)
                                         setCurrEngName(x.name)
                                         setCurrentTasks(x.tasks ? x.tasks : null)
+                                        setCurrentTeam(x.team)
                                     }}
                                 >
                                     <CardText>

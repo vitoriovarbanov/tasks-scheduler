@@ -5,9 +5,11 @@ import {
     Card, UncontrolledTooltip, Collapse, CardGroup, CardBody,
     CardText
 } from 'reactstrap';
-import { projectsList, formatName } from './scheduler-helpers';
+import { projectsList, formatName, usersForScheduler } from './scheduler-helpers';
 import { Icon } from '@iconify/react';
 import { CurrentTasks } from './project-resources'
+import SchedulerUsers from './users-scheduler'
+import { SelectedUserMapped } from './users-scheduler'
 
 
 interface TaskEvent {
@@ -28,7 +30,10 @@ const SchedulerParent = () => {
     const [draggedTaskId, setDraggedTaskId] = useState<null | string>(null);
     const [draggedEvent, setDraggedEvent] = useState<TaskEvent>();
     const [currentTaks, setCurrentTasks] = useState<null | CurrentTasks[]>(null)
-
+    const [calendarDisabled, setCalendarDisabled] = useState(true);
+    const [selectedResourceId, setSelectedResourceId] = useState<null | number>(null);
+    const [initResources, setInitResources] = useState<[] | SelectedUserMapped[]>([]);
+    const [currentTeam, setCurrentTeam] = useState<null | number[]>(null)
 
     const handleDragStart = useCallback((event: TaskEvent) => setDraggedEvent(event), [])
 
@@ -60,6 +65,7 @@ const SchedulerParent = () => {
                         setBackgroundForOutsideResource={setBackgroundForOutsideResource}
                         setCurrEngName={setCurrEngName}
                         setCurrentTasks={setCurrentTasks}
+                        setCurrentTeam={setCurrentTeam}
                     />
                 </div>
                 <div className='content-wrapper--calendar'>
@@ -120,7 +126,17 @@ const SchedulerParent = () => {
                                 </Card>
                         }
                     </Collapse>
-                    <Card>
+                    <SchedulerUsers
+                            setSelectedResourceId={setSelectedResourceId}
+                            selectedResourceId={selectedResourceId}
+                            users={usersForScheduler}
+                            currentTaskTeam={currentTeam}
+                            setCalendarDisabled={setCalendarDisabled}
+                            setInitResources={setInitResources}
+                            selectedProject={selectedProject}
+                           // noms={noms}
+                    />
+                    <Card className={`plain-card ${calendarDisabled ? 'scheduler-disabled' : ''}`}>
                         <SchedulerComponent
                         />
                     </Card>

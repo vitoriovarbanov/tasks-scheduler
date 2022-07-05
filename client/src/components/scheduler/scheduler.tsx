@@ -16,17 +16,13 @@ const SchedulerComponent = () => {
 
 
     return (
-        <div className='scheduler-main-container'>
-            <div style={{ height: '800px' }}>
-                <DnDCalendar
-                    localizer={localizer}
-                    events={myEventsList}
-                    resizable
-                    selectable
-                    defaultView="week"
-                />
-            </div>
-        </div>
+        <DnDCalendar
+            localizer={localizer}
+            events={myEventsList}
+            resizable
+            selectable
+            defaultView="week"
+        />
     )
 }
 
