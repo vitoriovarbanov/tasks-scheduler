@@ -5,11 +5,18 @@ import { Icon } from '@iconify/react';
 import { ProjectInterface } from './scheduler-helpers'
 import { Dispatch, SetStateAction } from "react";
 
+export type CurrentTasks = {
+    name: string,
+    id: string,
+    procedureDuration?: number
+}
+
 interface IProps {
     selectedProject: null | string;
     setSelectedProject: Dispatch<SetStateAction<null | string>>;
     setBackgroundForOutsideResource: Dispatch<SetStateAction<string>>;
     setCurrEngName: Dispatch<SetStateAction<string>>;
+    setCurrentTasks: Dispatch<SetStateAction<null | CurrentTasks[]>>
 }
 
 
@@ -22,13 +29,13 @@ export const generateColor = (i: number) => {
 }
 
 
-const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBackgroundForOutsideResource, 
-    setCurrEngName } 
+const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBackgroundForOutsideResource,
+    setCurrEngName, setCurrentTasks }
     : IProps) => {
     const getEngagementBackgroundColor = (e: React.MouseEvent<HTMLInputElement>) => {
         const el = e.target as HTMLElement
         const elParent = el.parentElement
-        if(elParent){
+        if (elParent) {
             if (el.className.includes('card-body')) {
                 const backgroundStyle = window.getComputedStyle(el, null).getPropertyValue("background-color");
                 setBackgroundForOutsideResource(backgroundStyle)
@@ -36,7 +43,7 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
                 const backgroundStyleCurrTarget = window.getComputedStyle(elParent, null).getPropertyValue("background-color");
                 setBackgroundForOutsideResource(backgroundStyleCurrTarget)
             }
-        }        
+        }
     }
 
     return (
@@ -58,10 +65,11 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
                                     style={generateColor(index)}
                                     id={`card-body-${index}`}
                                     key={x.id}
-                                    onClick={(event: React.MouseEvent<HTMLInputElement>) : void => {
+                                    onClick={(event: React.MouseEvent<HTMLInputElement>): void => {
                                         getEngagementBackgroundColor(event)
                                         setSelectedProject(x.id)
                                         setCurrEngName(x.name)
+                                        setCurrentTasks(x.tasks ? x.tasks : null)
                                     }}
                                 >
                                     <CardText>

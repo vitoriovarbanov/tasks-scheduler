@@ -54,16 +54,69 @@ export const myEventsList = [
 export interface ProjectInterface {
     name: string,
     id: string,
+    tasks?: {
+        name: string,
+        id: string,
+        procedureDuration?: number
+    }[]
 }
 
 export const projectsList: ProjectInterface[] = [
     {
         name: 'Apollo Project',
         id: 'xs12-sdsa12',
+        tasks: [
+            {
+                name: 'Task 1',
+                id: '1sfasf'
+            },
+            {
+                name: 'Task 2',
+                id: 'gdsgsda'
+            },
+            {
+                name: 'Task 3',
+                id: 'xcx234'
+            },
+            {
+                name: 'Task 4',
+                id: 'nvnbe513'
+            },
+            {
+                name: 'Task 5',
+                id: 'nbfdh32512'
+            },
+            {
+                name: 'Task 6',
+                id: 'ygdhbds312'
+            }
+        ]
     },
     {
         name: 'Beta Project',
         id: 'xs12-sds512',
+        tasks: [
+            {
+                name: 'Meeting 1',
+                id: 'vccv2'
+            },
+            {
+                name: 'Presentation FE',
+                id: 'nf22'
+            },
+            {
+                name: 'Meet up with CEO',
+                id: 'hds112'
+            },
+            {
+                name: 'Prepare for interview',
+                id: 'hfb22'
+            },
+            {
+                name: 'Select a new trainee',
+                id: 'ngfh33'
+            },
+        ]
     },
     {
         name: 'Gamma',
@@ -96,3 +149,5 @@ export const projectsList: ProjectInterface[] = [
 ]
 
 /************************************************** */
+
+export const formatName = (procedureName: string, engName: string) => `${procedureName} - ${engName}`;
