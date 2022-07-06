@@ -41,8 +41,8 @@ const SchedulerParent = () => {
         <>
             {
                 isCollapsed
-                    ? <Icon icon="mdi:arrow-down" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" />
-                    : <Icon icon="mdi:arrow-up" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" />
+                    ? <Icon icon="mdi:arrow-down" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
+                    : <Icon icon="mdi:arrow-up" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
             }
             <i
                 id="collapse-form-button"
@@ -71,7 +71,7 @@ const SchedulerParent = () => {
                 <div className='content-wrapper--calendar'>
                     <Card className="plain-card scheduler-collapsed-card">
                         <span className='float-left task-form-collapse mr-1 mt-1'>{collapseProcedures}</span>
-                        <h3 className="header-title mb-1 mt-1 ml-1 mr-1">
+                        <h3 className="float-left header-title mb-1 mt-1 ml-1 mr-1">
                             {/* <Translate id="pages.engagements.structure.procedures.title" /> */}
                             Задачи
                         </h3>

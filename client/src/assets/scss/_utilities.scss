@@ -1,0 +1,65 @@
+// ----
+// libsass (v3.5.4)
+// ----
+
+@mixin generate($prefix, $property) {
+    // List of sizes to generate for each
+    $sizes: 0,
+    .25,
+    .5,
+    1,
+    1.5,
+    3,
+    4,
+    5,
+    6;
+    // Spacing to multiply the sizes by
+    $spacing: 1rem;
+
+    // Loop through all of the sizes(we use @for rather than @each, as we want access to the index)
+    @for $i from 1 through length($sizes) {
+        // Get the size for the current index
+        $size: nth($sizes, $i);
+
+        // Create the rule
+        .#{$prefix}-#{$i - 1} {
+            #{$property}: $spacing * $size  !important;
+        }
+    }
+}
+
+@include generate(ml, margin-left);
+@include generate(mr, margin-right);
+@include generate(mt, margin-top);
+@include generate(mb, margin-bottom);
+
+@include generate(pl, padding-left);
+@include generate(pr, padding-right);
+@include generate(pt, padding-top);
+@include generate(pb, padding-bottom);
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-size {
+    height: 20px;
+    width: 20px;
+}
+
+.float-left {
+    float: left !important;
+}
+
+.header-title {
+    line-height: 25px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

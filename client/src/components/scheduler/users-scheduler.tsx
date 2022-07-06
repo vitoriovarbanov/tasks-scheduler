@@ -33,8 +33,8 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
         <>
             {
                 usersCardCollapsed
-                    ? <Icon icon="mdi:arrow-down" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" />
-                    : <Icon icon="mdi:arrow-up" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" />
+                    ? <Icon icon="mdi:arrow-down" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
+                    : <Icon icon="mdi:arrow-up" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
             }
             <i
                 id="collapse-form-button"
@@ -69,7 +69,7 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
         <>
             <Card className="plain-card scheduler-collapsed-card mt-1">
                 <span className='float-left task-form-collapse mr-1 mt-1'>{collapseUsers}</span>
-                <h3 className="header-title mb-1 mt-1 ml-1 mr-1">
+                <h3 className="float-left header-title mb-1 mt-1 ml-1 mr-1">
                     Екип
                 </h3>
             </Card>

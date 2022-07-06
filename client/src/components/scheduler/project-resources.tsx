@@ -49,8 +49,8 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
 
     return (
         <Card className="plain-card scheduler-engagements--container">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon icon="mdi:clipboard-file" style={{ height: '25px', width: '25px' }} />
+            <div className='flex-center'>
+                <Icon icon="mdi:clipboard-file" className='icon-size' />
                 <h3 className="header-title mb-2 mt-2 ml-2 inline-block">
                     Проекти
                     {/*   <Translate id="menu.sidebar.engagements" /> */}
