@@ -34,7 +34,7 @@ module.exports = {
         // Generated JS file names (with nested folders).
         // There will be one main bundle, and one file per asynchronous chunk.
         // We don't currently advertise code splitting but Webpack supports it.
-        filename: 'static/js/[name].[fullhash:8].js',
+        filename: 'static/js/[name].[hash:8].js',
         // chunkFilename: 'static/js/[name].[hash:8].chunk.js',
         // We inferred the "public path" (such as / or /my-project) from homepage.
         publicPath: publicPath,
@@ -42,21 +42,16 @@ module.exports = {
         hotUpdateMainFilename: 'hot/hot-update.json',
     },
     devServer: {
-        static: {
+       /*  static: {
             directory: path.resolve(__dirname, 'dist')
-        },
+        }, */
+        contentBase: './src/index.tsx',
         open: true,
         compress: true,
         port: 3000,
         hot: true,
         historyApiFallback: true,
-        devMiddleware: {
-            //writeToDisk: true, 
-            // This option slows down with a couple of m/s the reloading of the server during 
-            //development, include if you want to see the output of the build in dev
-            
-        }
-        
+        quiet: true
     },
     // resolve alias (Absolute paths)
     resolve: {
@@ -65,7 +60,7 @@ module.exports = {
         alias: {
             //Actions: resolveApp('src/actions/'),
             Components: resolveApp('src/components/'),
-            //Assets: resolveApp('src/assets/'),
+            Assets: resolveApp('src/assets/'),
             //Util: resolveApp('src/util/'),
             //Routes: resolveApp('src/routes/'),
             //Constants: resolveApp('src/constants/'),
@@ -113,10 +108,7 @@ module.exports = {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,
                 use: [
                     {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 10000,
-                        }
+                        loader: 'url-loader?limit=100000'
                     }
                 ]
             },
@@ -148,13 +140,14 @@ module.exports = {
                 // Enable file caching
                 // Use multi-process parallel running to improve the build speed
                 // Default number of concurrent runs: os.cpus().length - 1
+                cache: true,
                 parallel: true,
                 terserOptions: {
                     compress: false,
                     ecma: 8,
                     mangle: true,
-                    sourceMap: true
-                },               
+                },
+                sourceMap: true               
             })
         ]
     },

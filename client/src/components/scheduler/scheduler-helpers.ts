@@ -1,49 +1,61 @@
-const str = '2022-06-21T15:00:00+00:00';
-const str2 = '2022-06-21T18:00:00+00:00';
-const str3 = '2022-06-22T12:00:00+00:00';
-const str4 = '2022-06-22T14:00:00+00:00';
-const str5 = '2022-06-20T14:00:00+00:00';
-const str6 = '2022-06-20T17:30:00+00:00';
-const str7 = '2022-06-22T16:00:00+00:00';
-const str8 = '2022-06-22T17:00:00+00:00';
+const str = '2022-07-06T15:00:00+00:00';
+const str2 = '2022-07-06T18:00:00+00:00';
+const str3 = '2022-07-07T12:00:00+00:00';
+const str4 = '2022-07-07T14:00:00+00:00';
+const str5 = '2022-07-07T14:00:00+00:00';
+const str6 = '2022-07-07T17:30:00+00:00';
+const str7 = '2022-07-07T16:00:00+00:00';
+const str8 = '2022-07-07T17:00:00+00:00';
 
-export const myEventsList = [
+
+export interface EventInterface {
+    id?: string | null,
+    title?: string,
+    start?: string | Date,
+    end?: string | Date,
+    allDay?: boolean,
+    isAllDay?: boolean,
+    resourceId?: number | null,
+    backgroundColorClass?: string
+}
+
+export const myEventsList: EventInterface[] = [
     {
-        id: 0,
+        id: '0',
         title: 'My Test Event',
         start: new Date(str),
         end: new Date(str2),
-        resourceId: 31,
+        resourceId: 1,
         backgroundColorClass: "rgb(255, 255, 128)"
         //allDay: true
         //resource: any,
     },
     {
-        id: 1,
+        id: '1',
         title: 'Event 2',
         start: new Date(str3),
         end: new Date(str4),
-        resourceId: 31,
+        resourceId: 2,
         backgroundColorClass: "rgb(143, 255, 128)"
         //allDay: true
         //resource: any,
     },
     {
-        id: 3,
+        id: '3',
         title: 'Event 3',
         start: new Date(str5),
         end: new Date(str6),
-        resourceId: 31,
+        resourceId: 2,
         backgroundColorClass: "rgb(128, 185, 255)"
         //allDay: true
         //resource: any,
     },
     {
-        id: 4,
+        id: '4',
         title: 'Event 4',
         start: new Date(str7),
         end: new Date(str8),
-        resourceId: 31,
+        resourceId: 3,
         backgroundColorClass: "rgb(222, 255, 128)"
         //allDay: true
         //resource: any,
@@ -92,7 +104,7 @@ export const projectsList: ProjectInterface[] = [
                 id: 'ygdhbds312'
             }
         ],
-        team: [1,2,5]
+        team: [1, 2, 5]
     },
     {
         name: 'Beta Project',
@@ -119,17 +131,17 @@ export const projectsList: ProjectInterface[] = [
                 id: 'ngfh33'
             },
         ],
-        team: []
+        team: [1,3,4]
     },
     {
         name: 'Gamma',
         id: 'xfsd2-sdsa12',
-        team: [3,4]
+        team: [3, 4]
     },
     {
         name: 'Project Delta',
         id: 'bfdyh12-sdsa12',
-        team: [1,2,3,4,5]
+        team: [1, 2, 3, 4, 5]
     },
     {
         name: 'Epsilon',
@@ -196,3 +208,31 @@ export const usersForScheduler: UsersInterface[] = [
 
 /************************************************** */
 export const formatName = (procedureName: string, engName: string) => `${procedureName} - ${engName}`;
+
+export const uuidv2 = () => {
+    return replaceSymbols('2xxx-yxxx')
+}
+
+const replaceSymbols = (arg: string) => {
+    return arg.replace(/[xy]/g, (c) => {
+        // eslint-disable-next-line no-bitwise
+        const r = Math.random() * 16 | 0; const
+            // eslint-disable-next-line no-bitwise
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+export const minTime = new Date();
+minTime.setHours(7, 0, 0);
+export const maxTime = new Date();
+maxTime.setHours(20, 0, 0);
+
+/******************************************* */
+export interface DraggedTaskInterface {
+    title?: string,
+    name?: string,
+    start: string | Date,
+    end: string | Date,
+    allDay?: boolean,
+}

@@ -1,4 +1,3 @@
-
 @import 'react-big-calendar/lib/sass/styles';
 @import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 
@@ -76,11 +75,11 @@
   min-height: 24px !important;
 }
 
-.rbc-time-header-gutter{
+.rbc-time-header-gutter {
   width: 40px !important;
 }
 
-.rbc-button-link{
+.rbc-button-link {
   padding-bottom: 1rem !important;
 }
 
@@ -270,8 +269,29 @@
   margin-top: 0;
 }
 
-.user-highlithed{
+.user-highlithed {
   background-color: palegreen;
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
   border-radius: .3rem;
+}
+
+.rbc-month-view {
+  display: block;
+}
+
+/* .plain-card-calendar {
+  height: 700px;
+} */
+
+.rbc-day-bg {
+  border-bottom: 1px solid #ddd;
+}
+
+.rbc-day-bg .rbc-day-bg {
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.rbc-month-row {
+  height: 15%;
 }

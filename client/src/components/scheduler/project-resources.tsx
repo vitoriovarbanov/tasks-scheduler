@@ -15,7 +15,7 @@ interface IProps {
     selectedProject: null | string;
     setSelectedProject: Dispatch<SetStateAction<null | string>>;
     setBackgroundForOutsideResource: Dispatch<SetStateAction<string>>;
-    setCurrEngName: Dispatch<SetStateAction<string>>;
+    setCurrProjectName: Dispatch<SetStateAction<string>>;
     setCurrentTasks: Dispatch<SetStateAction<null | CurrentTasks[]>>
     setCurrentTeam: Dispatch<SetStateAction<null | number[]>>
 }
@@ -31,7 +31,7 @@ export const generateColor = (i: number) => {
 
 
 const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBackgroundForOutsideResource,
-    setCurrEngName, setCurrentTasks, setCurrentTeam }
+    setCurrProjectName, setCurrentTasks, setCurrentTeam }
     : IProps) => {
     const getEngagementBackgroundColor = (e: React.MouseEvent<HTMLInputElement>) => {
         const el = e.target as HTMLElement
@@ -69,7 +69,7 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
                                     onClick={(event: React.MouseEvent<HTMLInputElement>): void => {
                                         getEngagementBackgroundColor(event)
                                         setSelectedProject(x.id)
-                                        setCurrEngName(x.name)
+                                        setCurrProjectName(x.name)
                                         setCurrentTasks(x.tasks ? x.tasks : null)
                                         setCurrentTeam(x.team)
                                     }}

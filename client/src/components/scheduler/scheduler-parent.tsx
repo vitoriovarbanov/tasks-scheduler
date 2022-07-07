@@ -5,44 +5,66 @@ import {
     Card, UncontrolledTooltip, Collapse, CardGroup, CardBody,
     CardText
 } from 'reactstrap';
-import { projectsList, formatName, usersForScheduler } from './scheduler-helpers';
+import {
+    projectsList, formatName, usersForScheduler, myEventsList, EventInterface,
+    DraggedTaskInterface, uuidv2
+} from './scheduler-helpers';
 import { Icon } from '@iconify/react';
 import { CurrentTasks } from './project-resources'
 import SchedulerUsers from './users-scheduler'
 import { SelectedUserMapped } from './users-scheduler'
 
-
-interface TaskEvent {
-    title: string,
-    name: string,
-    start: Date,
-    end: Date,
-}
-
-
 const SchedulerParent = () => {
 
-    const [selectedProject, setSelectedProject] = useState<null | string>(null);
-    const [backgroundForOutsideResource, setBackgroundForOutsideResource] = useState('');
-    const [currentEngName, setCurrEngName] = useState('');
-    const [isCollapsed, setIsCollapsed] = useState(true);
-    const [taskDuration, setTaskDuration] = useState<null | number>(null);
-    const [draggedTaskId, setDraggedTaskId] = useState<null | string>(null);
-    const [draggedEvent, setDraggedEvent] = useState<TaskEvent>();
-    const [currentTaks, setCurrentTasks] = useState<null | CurrentTasks[]>(null)
-    const [calendarDisabled, setCalendarDisabled] = useState(true);
     const [selectedResourceId, setSelectedResourceId] = useState<null | number>(null);
+    const [eventsState, setEventsState] = useState<EventInterface[]>(myEventsList);
     const [initResources, setInitResources] = useState<[] | SelectedUserMapped[]>([]);
-    const [currentTeam, setCurrentTeam] = useState<null | number[]>(null)
+    const [draggedEvent, setDraggedEvent] = useState<DraggedTaskInterface>({ start: new Date, end: new Date });
+    const [backgroundForOutsideResource, setBackgroundForOutsideResource] = useState('');
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [calendarDisabled, setCalendarDisabled] = useState(true);
+    const [selectedProject, setSelectedProject] = useState<null | string>(null);
+    const [currentProjectName, setCurrProjectName] = useState('');
 
-    const handleDragStart = useCallback((event: TaskEvent) => setDraggedEvent(event), [])
+    /*   const [actionDialogOpen, setActionDialogOpen] = useState(false);
+    const [activeProcedure, setActiveProcedure] = useState(null);
+    const [selectableUsers, setSelectableUsers] = useState([]);
+    const [procedureForTransfer, setProcedureForTransfer] = useState({});
+    const [highlightedModalUser, setHighlightedModalUser] = useState(null);
+    const [idForTaskDetailsModal, setIdForTaskDetailsModal] = useState(null);
+     */
+
+    const [currentTaks, setCurrentTasks] = useState<null | CurrentTasks[]>(null)
+    const [currentTeam, setCurrentTeam] = useState<null | number[]>(null)
+    const [draggedTaskId, setDraggedTaskId] = useState<null | string>(null);
+    const [taskDuration, setTaskDuration] = useState<null | number>(null);
+
+
+    const handleDragStart = useCallback((event: DraggedTaskInterface) => setDraggedEvent(event), [])
+
+    const newEvent = useCallback(
+        (event: EventInterface) => {
+            if (calendarDisabled) {
+                return
+            }
+            setEventsState((prev) => {
+                const idList = prev.map((item) => item.id)
+                const duplicatedIds = idList.filter(x => x === event.id)
+                if (duplicatedIds.includes(event.id)) {
+                    event.id = event.id + `-${uuidv2()}`
+                }
+                return [...prev, { ...event }]
+            })
+        },
+        [setEventsState, calendarDisabled]
+    )
 
     const collapseProcedures = (
         <>
             {
                 isCollapsed
-                    ? <Icon icon="mdi:arrow-down" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
-                    : <Icon icon="mdi:arrow-up" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
+                    ? <Icon icon="mdi:arrow-down" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer' />
+                    : <Icon icon="mdi:arrow-up" onClick={() => setIsCollapsed(!isCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer' />
             }
             <i
                 id="collapse-form-button"
@@ -55,6 +77,8 @@ const SchedulerParent = () => {
         </>
     );
 
+    console.log(eventsState)
+
     return (
         <div className='scheduler-main-container'>
             <div className='content-wrapper'>
@@ -63,7 +87,7 @@ const SchedulerParent = () => {
                         selectedProject={selectedProject}
                         setSelectedProject={setSelectedProject}
                         setBackgroundForOutsideResource={setBackgroundForOutsideResource}
-                        setCurrEngName={setCurrEngName}
+                        setCurrProjectName={setCurrProjectName}
                         setCurrentTasks={setCurrentTasks}
                         setCurrentTeam={setCurrentTeam}
                     />
@@ -93,7 +117,7 @@ const SchedulerParent = () => {
                                     </h3>
                                     <CardGroup>
                                         {
-                                            currentTaks.map((x, index) => {
+                                            currentTaks.map((x) => {
                                                 return (
                                                     <>
                                                         <CardBody
@@ -127,17 +151,35 @@ const SchedulerParent = () => {
                         }
                     </Collapse>
                     <SchedulerUsers
+                        setSelectedResourceId={setSelectedResourceId}
+                        selectedResourceId={selectedResourceId}
+                        users={usersForScheduler}
+                        currentTaskTeam={currentTeam}
+                        setCalendarDisabled={setCalendarDisabled}
+                        setInitResources={setInitResources}
+                        selectedProject={selectedProject}
+                    />
+                    <Card className={`plain-card-calendar ${calendarDisabled ? 'scheduler-disabled' : ''}`}>
+                        <SchedulerComponent
+                            currentTaskTeam={currentTeam}
                             setSelectedResourceId={setSelectedResourceId}
                             selectedResourceId={selectedResourceId}
-                            users={usersForScheduler}
-                            currentTaskTeam={currentTeam}
-                            setCalendarDisabled={setCalendarDisabled}
+                            eventsState={eventsState}
+                            setEventsState={setEventsState}
+                            initResources={initResources}
                             setInitResources={setInitResources}
-                            selectedProject={selectedProject}
-                           // noms={noms}
-                    />
-                    <Card className={`plain-card ${calendarDisabled ? 'scheduler-disabled' : ''}`}>
-                        <SchedulerComponent
+                            draggedEvent={draggedEvent}
+                            setDraggedEvent={setDraggedEvent}
+                            backgroundForOutsideResource={backgroundForOutsideResource}
+                            calendarDisabled={calendarDisabled}
+                            currentProjectName={currentProjectName}
+                            //setActionDialogOpen={setActionDialogOpen}
+                            //setActiveProcedure={setActiveProcedure}
+                            //setSelectableUsers={setSelectableUsers}
+                            //setIdForTaskDetailsModal={setIdForTaskDetailsModal}
+                            draggedTaskId={draggedTaskId}
+                            taskDuration={taskDuration}
+                            newEvent={(event) => newEvent(event)}
                         />
                     </Card>
                 </div>
