@@ -2,29 +2,27 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import config from 'config';
 
-interface HookNextFunction {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (error?: Error): any
-}
-
 export interface UserDocument extends mongoose.Document {
     email: string,
     name: string,
     password: string,
+    role: string,
     createdAt: Date,
     updatedAt: Date,
+    comparePassword(candidatePassword: string): Promise<boolean>,
 }
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true},
     email: { type: String, required: true, unique: true},
     password: { type: String, required: true},
+    role: { type: String, required: true},
 
 }, {
     timestamps: true
 });
 
-userSchema.pre("save", async function(next: HookNextFunction){
+userSchema.pre("save", async function(next){
     const user = this as UserDocument
 
     if(!user.isModified('password')){
@@ -39,6 +37,11 @@ userSchema.pre("save", async function(next: HookNextFunction){
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return next()
 })
+
+userSchema.methods.comparePassword = async function (candidatePassword: string) : Promise<boolean>{
+    const user = this as UserDocument;
+    return bcrypt.compare(candidatePassword, user.password).catch((e)=>false)
+}
 
 const UserModel = mongoose.model("User", userSchema);
 
