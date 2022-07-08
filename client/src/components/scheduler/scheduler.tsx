@@ -29,11 +29,16 @@ interface IProps {
     draggedTaskId: string | null
     taskDuration: null | number;
     newEvent: (event: EventInterface) => void;
+    setIdForTaskDetailsModal: Dispatch<SetStateAction<null | string>>;
+    setactiveTask: Dispatch<SetStateAction<null | string>>;
+    setActionDialogOpen: Dispatch<SetStateAction<boolean>>;
+    setSelectableUsers: Dispatch<SetStateAction<null | { name: string | null, id: number }[]>>;
 }
 
 const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedResourceId, eventsState,
     setEventsState, initResources, setInitResources, draggedEvent, setDraggedEvent, backgroundForOutsideResource,
-    calendarDisabled, currentProjectName, draggedTaskId, taskDuration, newEvent }: IProps) => {
+    calendarDisabled, currentProjectName, draggedTaskId, taskDuration, newEvent, setIdForTaskDetailsModal,
+    setactiveTask, setActionDialogOpen, setSelectableUsers }: IProps) => {
 
     const localizer = momentLocalizer(moment);   
 
@@ -83,7 +88,7 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
         [setEventsState, calendarDisabled, selectedResourceId]
     )
 
-    /*   const resizeEvent = useCallback(
+     const resizeEvent = useCallback(
           ({ event, start, end }) => {
               if (calendarDisabled) {
                   return
@@ -95,7 +100,7 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
               })
           },
           [setEventsState, calendarDisabled]
-      ) */
+      )
 
     const onDropFromOutside = useCallback(
         ({ start, end, allDay }: DraggedTaskInterface) => {
@@ -133,34 +138,31 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
             currentProjectName, draggedTaskId, taskDuration]
     )
 
-    /*  const openProcedureActions = useCallback(
+    const openProcedureActions = useCallback(
          (event) => {
              if (typeof event.id === 'string') {
                  const splittedId = event.id.split('-')
-                 setIdForTaskDetailsModal(Number(splittedId[0]))
-             } else {
-                 setIdForTaskDetailsModal(event.id)
+                 setIdForTaskDetailsModal(splittedId[0])
              }
-             setActiveProcedure(event.id)
+             setactiveTask(event.id)
              findUsersInTeam()
              setActionDialogOpen(true)
          },
          []
-     ) */
+     )
 
-    /*  const findUsersInTeam = () => {
-         const currArr = []
+    const findUsersInTeam = () => {
+         const currArr: { name: string | null, id: number }[] | null = []
          const allWithClass = Array.from(
              document.getElementsByClassName('scheduler-tasks-eng-team-card--user-in-team')
          );
          allWithClass.forEach(x => {
-             const firstName = x.getAttribute('firstName')
-             const lastName = x.getAttribute('lastName')
+             const name = x.getAttribute('name')
              const dataKey = x.getAttribute('data-key')
-             currArr.push({ firstName, lastName, id: Number(dataKey) })
+             currArr.push({ name, id: Number(dataKey) })
          })
          setSelectableUsers(currArr)
-     } */
+     }
 
 
     return (
@@ -181,8 +183,8 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
             dragFromOutsideItem={dragFromOutsideItem}
             onDropFromOutside={onDropFromOutside}
             onEventDrop={moveEvent}
-            //onEventResize={resizeEvent}
-            //onDoubleClickEvent={openProcedureActions}
+            onEventResize={resizeEvent}
+            onDoubleClickEvent={openProcedureActions}
             resizable
             selectable
             defaultView="week"
