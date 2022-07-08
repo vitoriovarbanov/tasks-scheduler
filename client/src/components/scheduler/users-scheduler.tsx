@@ -13,7 +13,7 @@ export type SelectedUserMapped = {
 interface IProps {
     setSelectedResourceId: Dispatch<SetStateAction<null | number>>;
     selectedResourceId: null | number;
-    users: UsersInterface[]
+    users: UsersInterface[] | null;
     setCalendarDisabled: Dispatch<SetStateAction<boolean>>;
     currentTaskTeam: null | number[]
     setInitResources: Dispatch<SetStateAction<[] | SelectedUserMapped[]>>;
@@ -83,7 +83,7 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
                                     Изберете проект
                                 </span>
                                 :
-                                users
+                                users && users
                                     .map((x) => {
                                         return (
                                             <>
@@ -94,7 +94,7 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
                                                     onClick={() => {
                                                         setSelectedResourceId(x.id)
                                                         setCalendarDisabled(false)
-                                                        const selectedResource = usersResourceMap.find(y => y.resourceId === x.id)
+                                                        const selectedResource = usersResourceMap && usersResourceMap.find(y => y.resourceId === x.id)
                                                         if(selectedResource){
                                                             setInitResources([selectedResource])
                                                         }

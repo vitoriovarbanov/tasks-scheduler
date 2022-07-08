@@ -71,7 +71,7 @@ export interface ProjectInterface {
         id: string,
         procedureDuration?: number
     }[],
-    team: number[]
+    team: string[]
 }
 
 export const projectsList: ProjectInterface[] = [
@@ -104,7 +104,7 @@ export const projectsList: ProjectInterface[] = [
                 id: 'ygdhbds312'
             }
         ],
-        team: [1, 2, 5]
+        team: ["62c8287a9a3e065179bf4d1c", "62c82d83d65b568c004b98cd"]
     },
     {
         name: 'Beta Project',
@@ -131,17 +131,17 @@ export const projectsList: ProjectInterface[] = [
                 id: 'ngfh33'
             },
         ],
-        team: [1,3,4]
+        team: ["62c82d83d65b568c004b98cd","62c82dd2d65b568c004b98d1","62c82e03d65b568c004b98d3"]
     },
     {
         name: 'Gamma',
         id: 'xfsd2-sdsa12',
-        team: [3, 4]
+        team: ["62c82e03d65b568c004b98d3"]
     },
     {
         name: 'Project Delta',
         id: 'bfdyh12-sdsa12',
-        team: [1, 2, 3, 4, 5]
+        team: ["62c82d83d65b568c004b98cd","62c82dd2d65b568c004b98d1","62c82e03d65b568c004b98d3"]
     },
     {
         name: 'Epsilon',
@@ -175,6 +175,7 @@ export interface UsersInterface {
     name: string,
     id: number,
     role: string,
+    email?: string,
 }
 
 export const usersForScheduler: UsersInterface[] = [

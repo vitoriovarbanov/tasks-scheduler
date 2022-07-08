@@ -6,16 +6,32 @@ import {
     CardText
 } from 'reactstrap';
 import {
-    projectsList, formatName, usersForScheduler, myEventsList, EventInterface,
-    DraggedTaskInterface, uuidv2
+    projectsList, formatName, myEventsList, EventInterface,
+    DraggedTaskInterface, uuidv2, UsersInterface
 } from './scheduler-helpers';
 import { Icon } from '@iconify/react';
 import { CurrentTasks } from './project-resources'
 import SchedulerUsers from './users-scheduler'
 import { SelectedUserMapped } from './users-scheduler'
 import ActionModal from './action-modal';
+import { AxiosError, AxiosResponse } from 'axios';
+const axios = require('axios').default;
+import { API_URL } from '../../constants/index'
 
 const SchedulerParent = () => {
+
+    useEffect(()=>{
+        axios.get(`${API_URL}/api/users`)
+        .then(function (response: AxiosResponse) {
+            // handle success
+            setUsersForScheduler(response.data)
+            console.log(response);
+          })
+          .catch(function (error: AxiosError) {
+            // handle error
+            console.log(error);
+          })
+    },[])
 
     const [selectedResourceId, setSelectedResourceId] = useState<null | number>(null);
     const [eventsState, setEventsState] = useState<EventInterface[]>(myEventsList);
@@ -37,6 +53,7 @@ const SchedulerParent = () => {
     const [draggedTaskId, setDraggedTaskId] = useState<null | string>(null);
     const [taskDuration, setTaskDuration] = useState<null | number>(null);
     const [openModal, setOpenModal] = useState(false);
+    const [usersForScheduler, setUsersForScheduler] = useState<null | UsersInterface[]>(null)
 
     console.log(activeTask)
     const handleDragStart = useCallback((event: DraggedTaskInterface) => setDraggedEvent(event), [])
