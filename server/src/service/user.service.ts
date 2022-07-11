@@ -1,4 +1,4 @@
-import { DocumentDefinition } from 'mongoose';
+import { DocumentDefinition, FilterQuery } from 'mongoose';
 import UserModel, { UserDocument } from '../models/user.model';
 import { omit } from 'lodash';
 
@@ -33,6 +33,16 @@ export async function getUsers(){
     try{
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return await UserModel.find()
+    }catch(e: any){
+       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+       throw new Error(e)
+    }
+}
+
+export async function findUser(query: FilterQuery<UserDocument>){
+    try{
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return UserModel.findOne(query).lean();
     }catch(e: any){
        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
        throw new Error(e)
