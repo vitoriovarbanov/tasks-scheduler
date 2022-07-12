@@ -6,22 +6,31 @@ import validateResource from './middleware/validateResource';
 import { createUserSchema } from './schema/user.schema';
 import { requireUser } from './middleware/requireUser';
 import { createProjectHandler, getAllProjectHandler } from './controller/project.controller';
+import { createTaskHandler } from './controller/task.controller';
+import { createTaskSchema } from './schema/task.schema';
 
-function routes(app: Express){
+function routes(app: Express) {
     app.get('/api/users', getUsersHandler);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    app.post('/api/users', validateResource(createUserSchema) , createUserHandler);
+    app.post('/api/users', validateResource(createUserSchema), createUserHandler);
 
-    app.post('/api/sessions', validateResource(createSessionSchema) , createSessionHandler);
+    app.post('/api/sessions', validateResource(createSessionSchema), createSessionHandler);
 
-    app.get('/api/sessions', requireUser ,getUserSessionsHandler);
+    app.get('/api/sessions', requireUser, getUserSessionsHandler);
 
-    app.delete('/api/sessions', requireUser , deleteSessionHandler);
+    app.delete('/api/sessions', requireUser, deleteSessionHandler);
+
+    // PROJECTS
 
     app.post('/api/projects', createProjectHandler);
 
-    app.get('/api/projects', getAllProjectHandler)
+    app.get('/api/projects', getAllProjectHandler);
+
+    // TASKS
+    app.post('/api/tasks', validateResource(createTaskSchema) ,createTaskHandler);
+
+
 }
 
 export default routes;

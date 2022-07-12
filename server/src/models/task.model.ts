@@ -7,7 +7,7 @@ export interface TaskDocument extends mongoose.Document {
 }
 
 export const tasksSchema = new mongoose.Schema({
-    name: {type: String, required: true},
+    name: { type: String, required: true, unique: true },
 })
 
 

@@ -15,7 +15,7 @@ export async function createProjectHandler(req: Request, res: Response) {
     }
 }
 
-export async function deleteProjecHandler(req: Request, res: Response) {
+export async function deleteProjectHandler(req: Request, res: Response) {
 
 }
 
