@@ -5,6 +5,7 @@ import { createUserHandler, getUsersHandler } from './controller/user.controller
 import validateResource from './middleware/validateResource';
 import { createUserSchema } from './schema/user.schema';
 import { requireUser } from './middleware/requireUser';
+import { createProjectHandler, getAllProjectHandler } from './controller/project.controller';
 
 function routes(app: Express){
     app.get('/api/users', getUsersHandler);
@@ -17,6 +18,10 @@ function routes(app: Express){
     app.get('/api/sessions', requireUser ,getUserSessionsHandler);
 
     app.delete('/api/sessions', requireUser , deleteSessionHandler);
+
+    app.post('/api/projects', createProjectHandler);
+
+    app.get('/api/projects', getAllProjectHandler)
 }
 
 export default routes;
