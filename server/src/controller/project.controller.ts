@@ -34,6 +34,10 @@ export async function getAllProjectHandler(_req: Request, res: Response) {
                     message: "Projects not found"
                 });
             }
+            const test = projects.map(x => {
+                return { ...x, id: x._id }
+            })
+            console.log(test)
             res.status(200).json({
                 projects: projects,
                 request: {

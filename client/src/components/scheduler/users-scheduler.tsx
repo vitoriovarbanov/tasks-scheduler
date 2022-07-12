@@ -5,17 +5,17 @@ import { Icon } from '@iconify/react';
 
 export type SelectedUserMapped = {
     name: string,
-    id: number,
+    id: string,
     role: string,
-    resourceId: number
+    resourceId: string
 }
 
 interface IProps {
-    setSelectedResourceId: Dispatch<SetStateAction<null | number>>;
-    selectedResourceId: null | number;
+    setSelectedResourceId: Dispatch<SetStateAction<null | string>>;
+    selectedResourceId: null | string;
     users: UsersInterface[] | null;
     setCalendarDisabled: Dispatch<SetStateAction<boolean>>;
-    currentTaskTeam: null | number[]
+    currentTaskTeam: null | string[]
     setInitResources: Dispatch<SetStateAction<[] | SelectedUserMapped[]>>;
     selectedProject: null | string;
 }
@@ -47,7 +47,7 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
         </>
     )
 
-    const isUserInTeam = (userId: number) => {
+    const isUserInTeam = (userId: string) => {
         if (currentTaskTeam && currentTaskTeam.length > 0) {
             const userInTeam = currentTaskTeam.find(x => x === userId)
             if (userInTeam) {

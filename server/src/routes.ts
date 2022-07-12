@@ -28,7 +28,7 @@ function routes(app: Express) {
     app.get('/api/projects', getAllProjectHandler);
 
     // TASKS
-    app.post('/api/tasks', validateResource(createTaskSchema) ,createTaskHandler);
+    app.post('/api/tasks', validateResource(createTaskSchema), createTaskHandler);
 
 
 }

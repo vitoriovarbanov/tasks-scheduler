@@ -6,7 +6,7 @@ import ActionModalUsers from './аction-modal-users'
 interface IProps {
     setActionDialogOpen: Dispatch<SetStateAction<boolean>>;
     actionDialogOpen: boolean;
-    selectedResourceId: null | number;
+    selectedResourceId: null | string;
     activeTask: string | null;
     eventsState: EventInterface[]
     setEventsState: Dispatch<SetStateAction<EventInterface[]>>;

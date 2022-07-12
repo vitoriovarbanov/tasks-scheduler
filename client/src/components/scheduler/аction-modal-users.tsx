@@ -5,13 +5,13 @@ import {
 import { EventInterface } from './scheduler-helpers';
 
 interface IProps {
-    selectedResourceId: null | number;
-    selectableUsers: null | { name: string | null, id: number }[];
-    setHighlightedModalUser: Dispatch<SetStateAction<null | number>>;
-    highlightedModalUser: null | number;
-    setTaskForTransfer: Dispatch<SetStateAction<null | { userIdToTransfer: number, eventIdForTransfer: string | null }>>;
+    selectedResourceId: null | string;
+    selectableUsers: null | { name: string | null, id: string }[];
+    setHighlightedModalUser: Dispatch<SetStateAction<null | string>>;
+    highlightedModalUser: null | string;
+    setTaskForTransfer: Dispatch<SetStateAction<null | { userIdToTransfer: string, eventIdForTransfer: string | null }>>;
     activeTask: string | null;
-    disableButtonForTransfer: (selectableUsers: {name: string | null; id: number}[] | null) => void;
+    disableButtonForTransfer: (selectableUsers: {name: string | null; id: string}[] | null) => void;
 }
 
 
@@ -21,7 +21,7 @@ const ActionModalUsers = ({ selectedResourceId, selectableUsers, highlightedModa
     const usersToRender = selectableUsers && selectableUsers.filter(y => y.id !== selectedResourceId)
     usersToRender && disableButtonForTransfer(usersToRender)
 
-    const isUserSelected = (userId: number) => {
+    const isUserSelected = (userId: string) => {
         if (userId === highlightedModalUser) {
             return 'user-highlithed'
         }

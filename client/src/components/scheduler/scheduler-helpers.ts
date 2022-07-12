@@ -15,7 +15,7 @@ export interface EventInterface {
     end?: string | Date,
     allDay?: boolean,
     isAllDay?: boolean,
-    resourceId?: number | null,
+    resourceId?: string | null,
     backgroundColorClass?: string
 }
 
@@ -25,7 +25,7 @@ export const myEventsList: EventInterface[] = [
         title: 'My Test Event',
         start: new Date(str),
         end: new Date(str2),
-        resourceId: 1,
+        resourceId: '62cd330ab29604a9091c79c3',
         backgroundColorClass: "rgb(255, 255, 128)"
         //allDay: true
         //resource: any,
@@ -35,7 +35,7 @@ export const myEventsList: EventInterface[] = [
         title: 'Event 2',
         start: new Date(str3),
         end: new Date(str4),
-        resourceId: 2,
+        resourceId: '62cd330ab29604a9091c79c3',
         backgroundColorClass: "rgb(143, 255, 128)"
         //allDay: true
         //resource: any,
@@ -45,7 +45,7 @@ export const myEventsList: EventInterface[] = [
         title: 'Event 3',
         start: new Date(str5),
         end: new Date(str6),
-        resourceId: 2,
+        resourceId: '62cd339681eeed1fd03c116a',
         backgroundColorClass: "rgb(128, 185, 255)"
         //allDay: true
         //resource: any,
@@ -55,7 +55,7 @@ export const myEventsList: EventInterface[] = [
         title: 'Event 4',
         start: new Date(str7),
         end: new Date(str8),
-        resourceId: 3,
+        resourceId: '62cd339681eeed1fd03c116a',
         backgroundColorClass: "rgb(222, 255, 128)"
         //allDay: true
         //resource: any,
@@ -65,7 +65,7 @@ export const myEventsList: EventInterface[] = [
 /************************************************* */
 export interface ProjectInterface {
     name: string,
-    id: string,
+    _id: string,
     tasks?: {
         name: string,
         id: string,
@@ -77,7 +77,7 @@ export interface ProjectInterface {
 export const projectsList: ProjectInterface[] = [
     {
         name: 'Apollo Project',
-        id: 'xs12-sdsa12',
+        _id: 'xs12-sdsa12',
         tasks: [
             {
                 name: 'Task 1',
@@ -108,7 +108,7 @@ export const projectsList: ProjectInterface[] = [
     },
     {
         name: 'Beta Project',
-        id: 'xs12-sds512',
+        _id: 'xs12-sds512',
         tasks: [
             {
                 name: 'Meeting 1',
@@ -133,7 +133,7 @@ export const projectsList: ProjectInterface[] = [
         ],
         team: ["62c82d83d65b568c004b98cd","62c82dd2d65b568c004b98d1","62c82e03d65b568c004b98d3"]
     },
-    {
+/*     {
         name: 'Gamma',
         id: 'xfsd2-sdsa12',
         team: ["62c82e03d65b568c004b98d3"]
@@ -167,13 +167,13 @@ export const projectsList: ProjectInterface[] = [
         name: 'Iota Update',
         id: '8623ss-ss',
         team: []
-    },
+    }, */
 ]
 
 /************************************************** */
 export interface UsersInterface {
     name: string,
-    id: number,
+    id: string,
     role: string,
     email?: string,
 }
@@ -181,27 +181,27 @@ export interface UsersInterface {
 export const usersForScheduler: UsersInterface[] = [
     {
         name: 'Alexander Emilov',
-        id: 1,
+        id: '62cd330ab29604a9091c79c3',
         role: 'Developer'
     },
     {
         name: 'Ivelin Dimitrov',
-        id: 2,
+        id: '62cd339681eeed1fd03c116a',
         role: 'QA'
     },
     {
         name: 'Mariya Ilieva',
-        id: 3,
+        id: '62cd33c1985867eb3432ea22',
         role: 'Project Manager'
     },
     {
         name: 'John Doe',
-        id: 4,
+        id: '62cd33d8985867eb3432ea24',
         role: 'Senior Dev'
     },
     {
         name: 'Ronnie J',
-        id: 5,
+        id: '62cd33eb985867eb3432ea26',
         role: 'PR'
     },
 ]

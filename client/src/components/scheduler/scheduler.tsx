@@ -14,9 +14,9 @@ moment.tz.setDefault('Europe/Sofia')
 const DnDCalendar = withDragAndDrop(Calendar)
 
 interface IProps {
-    currentTaskTeam: null | number[]
-    setSelectedResourceId: Dispatch<SetStateAction<null | number>>;
-    selectedResourceId: null | number;
+    currentTaskTeam: null | string[]
+    setSelectedResourceId: Dispatch<SetStateAction<null | string>>;
+    selectedResourceId: null | string;
     eventsState: EventInterface[]
     setEventsState: Dispatch<SetStateAction<EventInterface[]>>;
     setInitResources: Dispatch<SetStateAction<[] | SelectedUserMapped[]>>;
@@ -69,7 +69,7 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
 
     const moveEvent = useCallback(
         ({ event, start, end, isAllDay: droppedOnAllDaySlot = false, resourceId }:
-            { event: EventInterface, start: Date | string, end: Date | string, isAllDay: boolean, resourceId?: number | null }) => {
+            { event: EventInterface, start: Date | string, end: Date | string, isAllDay: boolean, resourceId?: string | null }) => {
             if (calendarDisabled) {
                 return
             }

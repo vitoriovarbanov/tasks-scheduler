@@ -1,6 +1,5 @@
 import React, { MouseEventHandler } from 'react';
 import { Card, CardBody, CardGroup, CardText } from 'reactstrap';
-import { projectsList } from './scheduler-helpers';
 import { Icon } from '@iconify/react';
 import { ProjectInterface } from './scheduler-helpers'
 import { Dispatch, SetStateAction } from "react";
@@ -17,7 +16,8 @@ interface IProps {
     setBackgroundForOutsideResource: Dispatch<SetStateAction<string>>;
     setCurrProjectName: Dispatch<SetStateAction<string>>;
     setCurrentTasks: Dispatch<SetStateAction<null | CurrentTasks[]>>
-    setCurrentTeam: Dispatch<SetStateAction<null | number[]>>
+    setCurrentTeam: Dispatch<SetStateAction<null | string[]>>;
+    projectsList: null | ProjectInterface[]
 }
 
 
@@ -31,7 +31,7 @@ export const generateColor = (i: number) => {
 
 
 const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBackgroundForOutsideResource,
-    setCurrProjectName, setCurrentTasks, setCurrentTeam }
+    setCurrProjectName, setCurrentTasks, setCurrentTeam, projectsList }
     : IProps) => {
     const getEngagementBackgroundColor = (e: React.MouseEvent<HTMLInputElement>) => {
         const el = e.target as HTMLElement
@@ -58,17 +58,17 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
             </div>
             <CardGroup>
                 {
-                    projectsList.map((x, index) => {
+                    projectsList && projectsList.map((x, index) => {
                         return (
                             <>
                                 <CardBody
-                                    className={`scheduler-engagements--card ${selectedProject === x.id ? 'eng-selected' : ''}`}
+                                    className={`scheduler-engagements--card ${selectedProject === x._id ? 'eng-selected' : ''}`}
                                     style={generateColor(index)}
                                     id={`card-body-${index}`}
-                                    key={x.id}
+                                    key={x._id}
                                     onClick={(event: React.MouseEvent<HTMLInputElement>): void => {
                                         getEngagementBackgroundColor(event)
-                                        setSelectedProject(x.id)
+                                        setSelectedProject(x._id)
                                         setCurrProjectName(x.name)
                                         setCurrentTasks(x.tasks ? x.tasks : null)
                                         setCurrentTeam(x.team)

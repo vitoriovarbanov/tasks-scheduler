@@ -14,9 +14,13 @@ import { CurrentTasks } from './project-resources'
 import SchedulerUsers from './users-scheduler'
 import { SelectedUserMapped } from './users-scheduler'
 import ActionModal from './action-modal';
+import { ProjectInterface } from './scheduler-helpers'
+
+
 import { AxiosError, AxiosResponse } from 'axios';
 const axios = require('axios').default;
-import { API_URL } from '../../constants/index'
+import { API_URL } from '../../constants/index';
+
 
 const SchedulerParent = () => {
 
@@ -25,7 +29,6 @@ const SchedulerParent = () => {
         .then(function (response: AxiosResponse) {
             // handle success
             setUsersForScheduler(response.data)
-            console.log(response);
           })
           .catch(function (error: AxiosError) {
             // handle error
@@ -33,7 +36,18 @@ const SchedulerParent = () => {
           })
     },[])
 
-    const [selectedResourceId, setSelectedResourceId] = useState<null | number>(null);
+    useEffect(()=>{
+        axios.get(`${API_URL}/api/projects`)
+        .then(function (response: AxiosResponse) {
+            console.log(response.data);
+            setProjectsList(response.data.projects)
+          })
+          .catch(function (error: AxiosError) {
+            console.log(error);
+          })
+    },[])
+
+    const [selectedResourceId, setSelectedResourceId] = useState<null | string>(null);
     const [eventsState, setEventsState] = useState<EventInterface[]>(myEventsList);
     const [initResources, setInitResources] = useState<[] | SelectedUserMapped[]>([]);
     const [draggedEvent, setDraggedEvent] = useState<DraggedTaskInterface>({ start: new Date, end: new Date });
@@ -49,11 +63,12 @@ const SchedulerParent = () => {
     const [activeTask, setActiveTask] = useState<null | string>(null);
     const [idForTaskDetailsModal, setIdForTaskDetailsModal] = useState<null | string>(null);
     const [currentTaks, setCurrentTasks] = useState<null | CurrentTasks[]>(null)
-    const [currentTeam, setCurrentTeam] = useState<null | number[]>(null)
+    const [currentTeam, setCurrentTeam] = useState<null | string[]>(null)
     const [draggedTaskId, setDraggedTaskId] = useState<null | string>(null);
     const [taskDuration, setTaskDuration] = useState<null | number>(null);
     const [openModal, setOpenModal] = useState(false);
-    const [usersForScheduler, setUsersForScheduler] = useState<null | UsersInterface[]>(null)
+    const [usersForScheduler, setUsersForScheduler] = useState<null | UsersInterface[]>(null);
+    const [projectsList, setProjectsList] = useState<null | ProjectInterface[]>(null);
 
     console.log(activeTask)
     const handleDragStart = useCallback((event: DraggedTaskInterface) => setDraggedEvent(event), [])
@@ -107,6 +122,7 @@ const SchedulerParent = () => {
                             setCurrProjectName={setCurrProjectName}
                             setCurrentTasks={setCurrentTasks}
                             setCurrentTeam={setCurrentTeam}
+                            projectsList={projectsList}
                         />
                     </div>
                     <div className='content-wrapper--calendar'>
