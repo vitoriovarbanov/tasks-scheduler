@@ -12,17 +12,18 @@ interface IProps {
     setEventsState: Dispatch<SetStateAction<EventInterface[]>>;
     newEvent: (event: EventInterface) => void;
     setActiveTask: Dispatch<SetStateAction<null | string>>;
-    selectableUsers: null | { name: string | null, id: number }[];
-    setHighlightedModalUser: Dispatch<SetStateAction<null | number>>;
-    highlightedModalUser: null | number;
-    setTaskForTransfer: Dispatch<SetStateAction<null | { userIdToTransfer: number, eventIdForTransfer: string | null }>>;
-    taskForTransfer: null | { userIdToTransfer: number, eventIdForTransfer: string | null }
+    selectableUsers: null | { name: string | null, id: string }[];
+    setHighlightedModalUser: Dispatch<SetStateAction<null | string>>;
+    highlightedModalUser: null | string;
+    setTaskForTransfer: Dispatch<SetStateAction<null | { userIdToTransfer: string, eventIdForTransfer: string | null }>>;
+    taskForTransfer: null | { userIdToTransfer: string, eventIdForTransfer: string | null }
     setOpenModal: Dispatch<SetStateAction<boolean>>;
+    setStateUpdated: Dispatch<SetStateAction<boolean>>;
 }
 
 const ActionModal = ({ setActionDialogOpen, actionDialogOpen, eventsState, newEvent, activeTask,
     setEventsState, setActiveTask, selectedResourceId, selectableUsers, highlightedModalUser,
-    setHighlightedModalUser, setTaskForTransfer, taskForTransfer, setOpenModal
+    setHighlightedModalUser, setTaskForTransfer, taskForTransfer, setOpenModal, setStateUpdated
 }: IProps) => {
     const [disableButton, setDisableButton] = useState(false)
 
@@ -47,7 +48,7 @@ const ActionModal = ({ setActionDialogOpen, actionDialogOpen, eventsState, newEv
                     newEvent(newCopiedEvent)
                 }                
             }
-
+            setStateUpdated(true)
         },
         [eventsState, newEvent]
     )
@@ -59,16 +60,27 @@ const ActionModal = ({ setActionDialogOpen, actionDialogOpen, eventsState, newEv
                 const filtered = prev.filter((ev) => ev.id !== eventId)
                 return [...filtered, { ...existing, resourceId }]
             })
+            setStateUpdated(true)
         },
         [setEventsState]
     )
 
-    const disableButtonForTransfer = (arr: null | { name: string | null; id: number }[]) => {
+    const disableButtonForTransfer = (arr: null | { name: string | null; id: string }[]) => {
         if (arr && arr.length === 0) {
             setDisableButton(true)
         } else {
             setDisableButton(false)
         }
+    }
+
+    const setTaskDeletedStatus = (id: string | null) => {
+        const nextEventsState = [...eventsState];
+        const taskToBeDeleted = nextEventsState.find(x=>x.id === id)
+        if(taskToBeDeleted){
+            taskToBeDeleted['toBeDeleted'] = true;
+        }
+        setStateUpdated(true)
+        setEventsState(nextEventsState)
     }
 
     return (
@@ -103,7 +115,8 @@ const ActionModal = ({ setActionDialogOpen, actionDialogOpen, eventsState, newEv
                             <Button
                                 color="primary"
                                 onClick={() => {
-                                    setEventsState(eventsState.filter(x => x.id !== activeTask))
+                                    setTaskDeletedStatus(activeTask)
+                                    //setEventsState(eventsState.filter(x => x.id !== activeTask))
                                     setActiveTask(null)
                                     setActionDialogOpen(false)
                                 }}

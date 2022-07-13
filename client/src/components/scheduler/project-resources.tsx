@@ -62,13 +62,13 @@ const ProjectResourcesComponent = ({ selectedProject, setSelectedProject, setBac
                         return (
                             <>
                                 <CardBody
-                                    className={`scheduler-engagements--card ${selectedProject === x._id ? 'eng-selected' : ''}`}
+                                    className={`scheduler-engagements--card ${selectedProject === x.id ? 'eng-selected' : ''}`}
                                     style={generateColor(index)}
                                     id={`card-body-${index}`}
-                                    key={x._id}
+                                    key={x.id}
                                     onClick={(event: React.MouseEvent<HTMLInputElement>): void => {
                                         getEngagementBackgroundColor(event)
-                                        setSelectedProject(x._id)
+                                        setSelectedProject(x.id)
                                         setCurrProjectName(x.name)
                                         setCurrentTasks(x.tasks ? x.tasks : null)
                                         setCurrentTeam(x.team)

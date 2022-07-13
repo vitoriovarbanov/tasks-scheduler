@@ -3,7 +3,7 @@ import ProjectResourcesComponent from './project-resources';
 import SchedulerComponent from './scheduler';
 import {
     Card, UncontrolledTooltip, Collapse, CardGroup, CardBody,
-    CardText
+    CardText, Row, Button, Modal, ModalBody, ModalFooter
 } from 'reactstrap';
 import {
     projectsList, formatName, myEventsList, EventInterface,
@@ -15,7 +15,7 @@ import SchedulerUsers from './users-scheduler'
 import { SelectedUserMapped } from './users-scheduler'
 import ActionModal from './action-modal';
 import { ProjectInterface } from './scheduler-helpers'
-
+import { Prompt } from 'react-router-dom';
 
 import { AxiosError, AxiosResponse } from 'axios';
 const axios = require('axios').default;
@@ -24,31 +24,32 @@ import { API_URL } from '../../constants/index';
 
 const SchedulerParent = () => {
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${API_URL}/api/users`)
-        .then(function (response: AxiosResponse) {
-            // handle success
-            setUsersForScheduler(response.data)
-          })
-          .catch(function (error: AxiosError) {
-            // handle error
-            console.log(error);
-          })
-    },[])
+            .then(function (response: AxiosResponse) {
+                // handle success
+                console.log(response.data)
+                setUsersForScheduler(response.data)
+            })
+            .catch(function (error: AxiosError) {
+                // handle error
+                console.log(error);
+            })
+    }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${API_URL}/api/projects`)
-        .then(function (response: AxiosResponse) {
-            console.log(response.data);
-            setProjectsList(response.data.projects)
-          })
-          .catch(function (error: AxiosError) {
-            console.log(error);
-          })
-    },[])
+            .then(function (response: AxiosResponse) {
+                console.log(response.data.projects)
+                setProjectsList(response.data.projects)
+            })
+            .catch(function (error: AxiosError) {
+                console.log(error);
+            })
+    }, [])
 
     const [selectedResourceId, setSelectedResourceId] = useState<null | string>(null);
-    const [eventsState, setEventsState] = useState<EventInterface[]>(myEventsList);
+    const [eventsState, setEventsState] = useState<EventInterface[] | []>([]);
     const [initResources, setInitResources] = useState<[] | SelectedUserMapped[]>([]);
     const [draggedEvent, setDraggedEvent] = useState<DraggedTaskInterface>({ start: new Date, end: new Date });
     const [backgroundForOutsideResource, setBackgroundForOutsideResource] = useState('');
@@ -56,9 +57,9 @@ const SchedulerParent = () => {
     const [calendarDisabled, setCalendarDisabled] = useState(true);
     const [selectedProject, setSelectedProject] = useState<null | string>(null);
     const [currentProjectName, setCurrProjectName] = useState('');
-    const [highlightedModalUser, setHighlightedModalUser] = useState<null | number>(null);
-    const [taskForTransfer, setTaskForTransfer] = useState< null | { userIdToTransfer: number, eventIdForTransfer: string | null }>(null);
-    const [selectableUsers, setSelectableUsers] = useState<null | { name: string | null, id: number }[]>(null);
+    const [highlightedModalUser, setHighlightedModalUser] = useState<null | string>(null);
+    const [taskForTransfer, setTaskForTransfer] = useState<null | { userIdToTransfer: string, eventIdForTransfer: string | null }>(null);
+    const [selectableUsers, setSelectableUsers] = useState<null | { name: string | null, id: string }[]>(null);
     const [actionDialogOpen, setActionDialogOpen] = useState(false);
     const [activeTask, setActiveTask] = useState<null | string>(null);
     const [idForTaskDetailsModal, setIdForTaskDetailsModal] = useState<null | string>(null);
@@ -69,8 +70,11 @@ const SchedulerParent = () => {
     const [openModal, setOpenModal] = useState(false);
     const [usersForScheduler, setUsersForScheduler] = useState<null | UsersInterface[]>(null);
     const [projectsList, setProjectsList] = useState<null | ProjectInterface[]>(null);
+    const [stateUpdated, setStateUpdated] = useState<boolean>(false)
+    const [confirmChangesModalOpen, setConfirmChangesModalOpen] = useState<boolean>(false)
+    const [tempEvents, setTempEvents] = useState<EventInterface[] | null>(null);
+    const [tempInitResources, setTempInitResources] = useState<null | SelectedUserMapped>(null);
 
-    console.log(activeTask)
     const handleDragStart = useCallback((event: DraggedTaskInterface) => setDraggedEvent(event), [])
 
     const newEvent = useCallback(
@@ -126,6 +130,32 @@ const SchedulerParent = () => {
                         />
                     </div>
                     <div className='content-wrapper--calendar'>
+                        <Row className="mb-2 modal-row-action">
+                            <div className="modal-row-action--container">
+                                <Button
+                                    color="primary"
+                                    onClick={() => {
+                                        axios({
+                                            method: 'put',
+                                            url: `${API_URL}/api/users/tasks/${selectedResourceId}`,
+                                            data: {
+                                                userTasks: eventsState
+                                            }
+                                        }).then((data: AxiosResponse) => {
+                                            if (data.status === 200) {
+                                                const res = axios.get(`${API_URL}/api/users`)
+                                                return res
+                                            }
+                                        }).then((response: AxiosResponse) => {
+                                            setUsersForScheduler(response.data)
+                                            setStateUpdated(false)
+                                        }).catch((e: AxiosError) => console.log(e))
+                                    }}
+                                >
+                                    Запази задачите
+                                </Button>
+                            </div>
+                        </Row>
                         <Card className="plain-card scheduler-collapsed-card">
                             <span className='float-left task-form-collapse mr-1 mt-1'>{collapseProcedures}</span>
                             <h3 className="float-left header-title mb-1 mt-1 ml-1 mr-1">
@@ -191,16 +221,19 @@ const SchedulerParent = () => {
                             setCalendarDisabled={setCalendarDisabled}
                             setInitResources={setInitResources}
                             selectedProject={selectedProject}
+                            setEventsState={setEventsState}
+                            stateUpdated={stateUpdated}
+                            setConfirmChangesModalOpen={setConfirmChangesModalOpen}
+                            setTempEvents={setTempEvents}
+                            setTempInitResources={setTempInitResources}
                         />
                         <Card className={`plain-card-calendar ${calendarDisabled ? 'scheduler-disabled' : ''}`}>
                             <SchedulerComponent
                                 currentTaskTeam={currentTeam}
-                                setSelectedResourceId={setSelectedResourceId}
                                 selectedResourceId={selectedResourceId}
                                 eventsState={eventsState}
                                 setEventsState={setEventsState}
                                 initResources={initResources}
-                                setInitResources={setInitResources}
                                 draggedEvent={draggedEvent}
                                 setDraggedEvent={setDraggedEvent}
                                 backgroundForOutsideResource={backgroundForOutsideResource}
@@ -213,6 +246,7 @@ const SchedulerParent = () => {
                                 draggedTaskId={draggedTaskId}
                                 taskDuration={taskDuration}
                                 newEvent={(event) => newEvent(event)}
+                                setStateUpdated={setStateUpdated}
                             />
                         </Card>
                     </div>
@@ -233,7 +267,44 @@ const SchedulerParent = () => {
                 setTaskForTransfer={setTaskForTransfer}
                 taskForTransfer={taskForTransfer}
                 setOpenModal={setOpenModal}
+                setStateUpdated={setStateUpdated}
             />
+            <Modal
+                isOpen={confirmChangesModalOpen}
+                toggle={() => setConfirmChangesModalOpen(true)}
+                className="modal-dialog-centered"
+                size="lg"
+            >
+                <ModalBody>
+                    <Row className="mb-2 modal-row-action">
+                        <div className="modal-row-action--container">
+                            Имате незапазени промени. Желаете ли да продължите?
+                        </div>
+                    </Row>
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="secondary"
+                        onClick={() => {
+                            if(tempInitResources && tempEvents){
+                                setInitResources([tempInitResources])
+                                setEventsState(tempEvents)
+                            }                           
+                        }}
+                    >
+                        Потвърди
+                    </Button>
+                    <Button
+                        color="secondary"
+                        onClick={() => {
+                            setStateUpdated(false)
+                            setConfirmChangesModalOpen(false)
+                        }}
+                    >
+                        Отказ
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </>
     )
 }

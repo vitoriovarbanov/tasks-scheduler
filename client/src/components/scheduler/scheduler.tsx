@@ -5,7 +5,7 @@ import moment from 'moment';
 import 'moment/locale/bg';
 import 'moment-timezone';
 import {
-    myEventsList, EventInterface, DraggedTaskInterface, formatName, uuidv2,
+    EventInterface, DraggedTaskInterface, formatName, uuidv2,
     minTime, maxTime
 } from './scheduler-helpers';
 import { SelectedUserMapped } from './users-scheduler'
@@ -15,11 +15,9 @@ const DnDCalendar = withDragAndDrop(Calendar)
 
 interface IProps {
     currentTaskTeam: null | string[]
-    setSelectedResourceId: Dispatch<SetStateAction<null | string>>;
     selectedResourceId: null | string;
     eventsState: EventInterface[]
     setEventsState: Dispatch<SetStateAction<EventInterface[]>>;
-    setInitResources: Dispatch<SetStateAction<[] | SelectedUserMapped[]>>;
     initResources: [] | SelectedUserMapped[]
     draggedEvent: DraggedTaskInterface | any;
     setDraggedEvent: Dispatch<SetStateAction<DraggedTaskInterface>>;
@@ -32,13 +30,14 @@ interface IProps {
     setIdForTaskDetailsModal: Dispatch<SetStateAction<null | string>>;
     setactiveTask: Dispatch<SetStateAction<null | string>>;
     setActionDialogOpen: Dispatch<SetStateAction<boolean>>;
-    setSelectableUsers: Dispatch<SetStateAction<null | { name: string | null, id: number }[]>>;
+    setSelectableUsers: Dispatch<SetStateAction<null | { name: string | null, id: string }[]>>;
+    setStateUpdated: Dispatch<SetStateAction<boolean>>;
 }
 
-const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedResourceId, eventsState,
-    setEventsState, initResources, setInitResources, draggedEvent, setDraggedEvent, backgroundForOutsideResource,
+const SchedulerComponent = ({ currentTaskTeam, selectedResourceId, eventsState,
+    setEventsState, initResources, draggedEvent, setDraggedEvent, backgroundForOutsideResource,
     calendarDisabled, currentProjectName, draggedTaskId, taskDuration, newEvent, setIdForTaskDetailsModal,
-    setactiveTask, setActionDialogOpen, setSelectableUsers }: IProps) => {
+    setactiveTask, setActionDialogOpen, setSelectableUsers, setStateUpdated }: IProps) => {
 
     const localizer = momentLocalizer(moment);   
 
@@ -80,10 +79,9 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
             setEventsState((prev: EventInterface[]) => {
                 const existing = prev.find((ev: EventInterface) => ev.id === event.id) ?? {}
                 const filtered = prev.filter((ev: EventInterface) => ev.id !== event.id)
-                console.log(end)
-                console.log(resourceId)
                 return [...filtered, { ...existing, start, end, allDay, resourceId: resourceId || selectedResourceId }]
             })
+            setStateUpdated(true)
         },
         [setEventsState, calendarDisabled, selectedResourceId]
     )
@@ -98,6 +96,7 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
                   const filtered = prev.filter((ev) => ev.id !== event.id)
                   return [...filtered, { ...existing, start, end }]
               })
+              setStateUpdated(true)
           },
           [setEventsState, calendarDisabled]
       )
@@ -129,9 +128,11 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
                 resourceId: selectedResourceId,
                 backgroundColorClass: backgroundForOutsideResource,
                 id: draggedTaskId || uuidv2(),
+                isNew: true,
             }
             
             setDraggedEvent({ start: new Date, end: new Date })
+            setStateUpdated(true)
             newEvent(event)
         },
         [draggedEvent, setDraggedEvent, newEvent, calendarDisabled, selectedResourceId, backgroundForOutsideResource,
@@ -152,29 +153,23 @@ const SchedulerComponent = ({ currentTaskTeam, setSelectedResourceId, selectedRe
      )
 
     const findUsersInTeam = () => {
-         const currArr: { name: string | null, id: number }[] | null = []
+         const currArr: { name: string | null, id: string }[] | null = []
          const allWithClass = Array.from(
              document.getElementsByClassName('scheduler-tasks-eng-team-card--user-in-team')
          );
          allWithClass.forEach(x => {
              const name = x.getAttribute('name')
              const dataKey = x.getAttribute('data-key')
-             currArr.push({ name, id: Number(dataKey) })
+             currArr.push({ name, id: dataKey ? dataKey : '' })
          })
          setSelectableUsers(currArr)
-     }
+    }
 
 
     return (
         <DnDCalendar
             localizer={localizer}
-            events={eventsState.filter(x => {
-                if (selectedResourceId) {
-                    return selectedResourceId === x.resourceId
-                } else {
-                    return x
-                }
-            })}
+            events={eventsState.filter(x => !x.toBeDeleted)}
             startAccessor="start"
             endAccessor="end"
             draggableAccessor={(event) => true}

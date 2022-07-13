@@ -10,13 +10,16 @@ const str8 = '2022-07-07T17:00:00+00:00';
 
 export interface EventInterface {
     id?: string | null,
+    originalTaskId?: string,
     title?: string,
     start?: string | Date,
     end?: string | Date,
     allDay?: boolean,
     isAllDay?: boolean,
     resourceId?: string | null,
-    backgroundColorClass?: string
+    backgroundColorClass?: string,
+    isNew?: boolean,
+    toBeDeleted?: boolean,
 }
 
 export const myEventsList: EventInterface[] = [
@@ -65,7 +68,7 @@ export const myEventsList: EventInterface[] = [
 /************************************************* */
 export interface ProjectInterface {
     name: string,
-    _id: string,
+    id: string,
     tasks?: {
         name: string,
         id: string,
@@ -77,7 +80,7 @@ export interface ProjectInterface {
 export const projectsList: ProjectInterface[] = [
     {
         name: 'Apollo Project',
-        _id: 'xs12-sdsa12',
+        id: 'xs12-sdsa12',
         tasks: [
             {
                 name: 'Task 1',
@@ -108,7 +111,7 @@ export const projectsList: ProjectInterface[] = [
     },
     {
         name: 'Beta Project',
-        _id: 'xs12-sds512',
+        id: 'xs12-sds512',
         tasks: [
             {
                 name: 'Meeting 1',
@@ -176,9 +179,10 @@ export interface UsersInterface {
     id: string,
     role: string,
     email?: string,
+    userTasks: EventInterface[]
 }
 
-export const usersForScheduler: UsersInterface[] = [
+/* export const usersForScheduler: UsersInterface[] = [
     {
         name: 'Alexander Emilov',
         id: '62cd330ab29604a9091c79c3',
@@ -204,7 +208,7 @@ export const usersForScheduler: UsersInterface[] = [
         id: '62cd33eb985867eb3432ea26',
         role: 'PR'
     },
-]
+] */
 
 
 /************************************************** */

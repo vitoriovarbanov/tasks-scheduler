@@ -1,6 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Card, CardBody, CardGroup, CardText, Collapse, UncontrolledTooltip } from 'reactstrap';
-import { UsersInterface } from './scheduler-helpers'
+import { UsersInterface, EventInterface } from './scheduler-helpers'
 import { Icon } from '@iconify/react';
 
 export type SelectedUserMapped = {
@@ -18,11 +18,17 @@ interface IProps {
     currentTaskTeam: null | string[]
     setInitResources: Dispatch<SetStateAction<[] | SelectedUserMapped[]>>;
     selectedProject: null | string;
+    setEventsState: Dispatch<SetStateAction<EventInterface[] | []>>;
+    stateUpdated: boolean;
+    setConfirmChangesModalOpen: Dispatch<SetStateAction<boolean>>;
+    setTempInitResources: Dispatch<SetStateAction<null | SelectedUserMapped>>;
+    setTempEvents: Dispatch<SetStateAction<EventInterface[] | null>>;
 }
 
 
 const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setCalendarDisabled,
-    currentTaskTeam, setInitResources, selectedProject }: IProps) => {
+    currentTaskTeam, setInitResources, selectedProject, setEventsState, setConfirmChangesModalOpen, stateUpdated,
+    setTempEvents, setTempInitResources }: IProps) => {
     const [usersCardCollapsed, setUsersCardCollapsed] = useState(true);
 
     const usersResourceMap = users && users.map(x => {
@@ -33,8 +39,8 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
         <>
             {
                 usersCardCollapsed
-                    ? <Icon icon="mdi:arrow-down" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
-                    : <Icon icon="mdi:arrow-up" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer'/>
+                    ? <Icon icon="mdi:arrow-down" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer' />
+                    : <Icon icon="mdi:arrow-up" onClick={() => setUsersCardCollapsed(!usersCardCollapsed)} id="collapse-form-button" className='icon-size cursor-pointer' />
             }
             <i
                 id="collapse-form-button"
@@ -94,11 +100,23 @@ const SchedulerUsers = ({ setSelectedResourceId, selectedResourceId, users, setC
                                                     onClick={() => {
                                                         setSelectedResourceId(x.id)
                                                         setCalendarDisabled(false)
+                                                        const mappedEvents = x.userTasks.map(x => {
+                                                            return { ...x, start: x.start ? new Date(x.start) : '', end: x.end ? new Date(x.end) : '', allDay: false }
+                                                        })
                                                         const selectedResource = usersResourceMap && usersResourceMap.find(y => y.resourceId === x.id)
-                                                        if(selectedResource){
-                                                            setInitResources([selectedResource])
+                                                        if (stateUpdated) {
+                                                            setTempEvents(mappedEvents)
+                                                            if (selectedResource) {
+                                                                setTempInitResources(selectedResource)
+                                                            }
+                                                            setConfirmChangesModalOpen(true)
+                                                        } else {
+                                                            if (selectedResource) {
+                                                                setInitResources([selectedResource])
+                                                            }
+                                                            setEventsState(mappedEvents)
                                                         }
-                                                        
+
                                                     }}
                                                     key={x.id}
                                                     data-key={x.id}
